@@ -12,10 +12,12 @@ public class Index {
 		 g1.token1(query);		 
 		 //task1
 		 g1.fname(query);
-		 //task2 and task 3 
+		 //task2  
 		 g1.basefilter(query);
+		 //task 3
+		 String lastres=g1.endfilter(query);
 		 //task4
-		 g1.conditions(query);
+		 g1.conditions(lastres);
 		 //task5
 		 g1.operator(query);
 		 //task6

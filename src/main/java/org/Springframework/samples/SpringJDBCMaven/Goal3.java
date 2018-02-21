@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class Goal3 {
 
 	public void goalHead() {
-	       String csvFile = "ipl.csv";
+	       String csvFile = "/home/sapient/Desktop/SpringJDBCMaven/ipl.csv";
 	        BufferedReader br = null;
 	        String csvSplitBy = ",";
 
