@@ -127,7 +127,7 @@ public class Goal {
 	// To fulfill goal 5 of retrieving data fron ipl.csv file according to query
 	// entered
 	public String goal5(ArrayList<String> selectResult, String conditionResult) {
-		String csvFile = "/home/sapient/Desktop/SpringJDBCMaven/ipl.csv";
+		String csvFile = "ipl.csv";
 		BufferedReader br = null;
 		String csvSplit = ",";
 		String line = "";
