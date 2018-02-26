@@ -1,9 +1,6 @@
 package org.Springframework.samples.SpringJDBCMaven;
-
 import java.util.ArrayList;
 import java.util.Scanner;
-
-
 public class Index {
 	static Scanner sc=new Scanner(System.in);
 	public static void main(String[] args) {
@@ -19,7 +16,7 @@ public class Index {
 		 String lastResult=g1.endfilter(query);
 		 System.out.println(lastResult);
 		 //task4
-		 String conditionResult=g1.conditions(lastResult);
+		 ArrayList<String> conditionResult=g1.conditions(lastResult);
 		 System.out.println(conditionResult);
 		 //task5
 		 g1.operator(token);
@@ -27,17 +24,18 @@ public class Index {
 		 ArrayList<String> selectResult=g1.selectInfo(query);
 		 System.out.println(selectResult);
 		 //task7
-		 g1.order(query);	
+		 String orderResult=g1.order(query);	
+		 System.out.println(orderResult);
 		 //task 8
-		 g1.group(query);
+		 String groupResult= g1.group(query);
+		 System.out.println(groupResult);
 		 //task 9
-		 g1.aggregate(query);
+		 String aggregateResult=g1.aggregate(query);
+		 System.out.println(aggregateResult);
 		 // goal 3
 		 Goal3 obj3=new Goal3();
 		 obj3.goalHead();
 		 //goal 5
 		 g1.goal5(selectResult,conditionResult);
-
 	}
-
 }

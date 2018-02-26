@@ -1,24 +1,23 @@
 package org.Springframework.samples.SpringJDBCMaven;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class Goal3 {
-
 	public void goalHead() {
 	       String csvFile = "ipl.csv";
 	        BufferedReader br = null;
 	        String csvSplitBy = ",";
-
 	        try {
-	        	String strArray[] = new String[18];
-	        	String strArray1[] = new String[18];
                 String heading=null;
                 String type=null;
 	            br = new BufferedReader(new FileReader(csvFile));
 	            heading = br.readLine();
 	            type = br.readLine();
-	            strArray= heading.split(csvSplitBy);
-	            strArray1= type.split(csvSplitBy);
+	            String strArray[]= heading.split(csvSplitBy);
+	            String strArray1[]= type.split(csvSplitBy);
 	            for(int i=0;i<strArray.length;i++)
 	            { 
 	            	System.out.print(strArray[i]+":- "); 
@@ -55,7 +54,5 @@ public class Goal3 {
 	                }
 	            }
 	        }
-
 	}
-
 }

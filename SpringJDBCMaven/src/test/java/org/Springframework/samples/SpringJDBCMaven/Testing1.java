@@ -1,5 +1,8 @@
 package org.Springframework.samples.SpringJDBCMaven;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import org.junit.Test;
 public class Testing1  {
@@ -43,9 +46,12 @@ public class Testing1  {
 	@Test
 	public void check5(){			
 		Goal obj2=new Goal();
-		String name="select venue from ipl.csv where venue = mohali";
-		String resultconditions=obj2.conditions(name);
-		assertTrue(resultconditions.equals("venue = mohali"));
+		String name="select venue from ipl.csv where venue = mohali ";
+		ArrayList<String> conditionsArray=obj2.conditions(name);
+		//String resultconditions=conditionsArray.toString();
+		ArrayList<String> resultconditions=new ArrayList<String>();
+		resultconditions.add("venue = mohali");
+		assertTrue(conditionsArray.equals(resultconditions));
 	}
 	//Testing of getting string after 'order by'
 	@Test
@@ -66,7 +72,7 @@ public class Testing1  {
 //	@Test
 //	public void check8(){			
 //		Goal obj2=new Goal();
-//		String name="select venue from ipl.csv where venue = mohali group by team";
+//		String name="select venue id from ipl.csv where team1 = Mumbai Indians id = 76 group by team";
 //		String resultgroup=obj2.group(name);
 //		assertTrue(resultgroup.equals("team"));
 //	}

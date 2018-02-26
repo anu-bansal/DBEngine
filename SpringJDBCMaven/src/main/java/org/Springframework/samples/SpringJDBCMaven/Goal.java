@@ -1,10 +1,15 @@
 package org.Springframework.samples.SpringJDBCMaven;
-
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.*;
-
 public class Goal {
 	String first = null;
 	String last = null;
@@ -13,7 +18,6 @@ public class Goal {
 	static String selected;
 	ArrayList<String> con = new ArrayList<String>();
 	ArrayList<String> token = new ArrayList<String>();
-
 	// To tokenise entered query and adding into arraylist
 	public ArrayList<String> token1(String query) {
 		String words = null;
@@ -25,7 +29,6 @@ public class Goal {
 		}
 		return token;
 	}
-
 	// To get .csv file name from the entered query
 	public String fname(String query) {
 		String code = "";
@@ -37,7 +40,6 @@ public class Goal {
 		System.out.println(code);
 		return code;
 	}
-
 	// To get string before 'where' from the query
 	public String basefilter(String query) {
 		index1 = query.indexOf("where");
@@ -46,7 +48,6 @@ public class Goal {
 		System.out.println(first);
 		return first;
 	}
-
 	// To get string after 'where' from the query
 	public String endfilter(String query) {
 		System.out.print("Query after where: ");
@@ -54,18 +55,16 @@ public class Goal {
 		last = query.substring(index2, query.length());
 		return last;
 	}
-
 	// To get conditions to select particular valued rows
-	public String conditions(String last) {
-		String condition = "";
+	public ArrayList<String> conditions(String last) {
+		ArrayList<String> condition= new ArrayList<String>();
 		System.out.println("Conditions: ");
-		Pattern p2 = Pattern.compile("([\\w]+[ ]?)((<=)|(>=)|(<>)|=|<|>)([ ]?[']?[\\w]+[']?)");
+		Pattern p2 = Pattern.compile("([\\w]+[ ]?)((<=)|(>=)|(<>)|=|<|>)([ ]?[']?[\\w]+[ ]?[\\w]*[']?)");
 		Matcher m2 = p2.matcher(last);
 		while (m2.find())
-			condition = m2.group();
+			condition.add(m2.group());
 		return condition;
 	}
-
 	// To get operators like and,or and not from the entered string
 	public String operator(ArrayList<String> token) {
 		for (String operatorCollection : token) {
@@ -75,7 +74,6 @@ public class Goal {
 		}
 		return "error";
 	}
-
 	// To get selected fields/information from the entered query
 	public ArrayList<String> selectInfo(String query) {
 		System.out.println("selected fields/information from the given query");
@@ -89,31 +87,28 @@ public class Goal {
 		}
 		return con;
 	}
-
 	// To get string after 'order by'
 	public String order(String query) {
 		String afterOrderBy = null;
 		if (query.contains("order")) {
 			int index4 = query.indexOf("order by") + ("order by ".length());
 			afterOrderBy = query.substring(index4, query.length());
-			System.out.println("After order by:" + afterOrderBy);
+			System.out.println("After order by:");
 		} else
 			System.out.println("doesn't contain any order by clause");
 		return afterOrderBy;
 	}
-
 	// To get string after 'group by'
 	public String group(String query) {
 		String afterGroupBy = null;
 		if (query.contains("group")) {
 			int index5 = query.indexOf("group by") + ("group by ".length());
 			afterGroupBy = query.substring(index5, query.length());
-			System.out.println("After group by:" + afterGroupBy);
+			System.out.println("After group by:");
 		} else
 			System.out.println("doesn't contain any group by clause");
 		return afterGroupBy;
 	}
-
 	// To get aggregate function from entered query
 	public String aggregate(String query) {
 		System.out.println("aggregate functions");
@@ -123,47 +118,70 @@ public class Goal {
 			System.out.println(m.group());
 		return "in function aggregate";
 	}
-
-	// To fulfill goal 5 of retrieving data fron ipl.csv file according to query
-	// entered
-	public String goal5(ArrayList<String> selectResult, String conditionResult) {
+	// To fulfill goal 5 of retrieving data fron ipl.csv file according to query entered
+	public String goal5(ArrayList<String> selectResult, ArrayList<String> conditionResult) {
 		String csvFile = "ipl.csv";
 		BufferedReader br = null;
 		String csvSplit = ",";
 		String line = "";
 		String heading = null;
 		String[] data = null;
-		ArrayList<Integer> arrayMatch = new ArrayList<Integer>();
-		String strArray[] = new String[18];
+		ArrayList<Integer> conditionHeadingMatch = new ArrayList<Integer>();
 		try {
 			br = new BufferedReader(new FileReader(csvFile)); 
 			//To get heading elements from ipl.csv file
 			heading = br.readLine();
-			strArray = heading.split(csvSplit);
+			String strArray[] = heading.split(csvSplit);
 			List<String> headingList = Arrays.asList(strArray);
 			//To add heading elements from a string into arraylist
 			ArrayList<String> headingArray = new ArrayList<String>(headingList);
-			//comparing elements of heading and elements of selected information from the query
-			for (int i = 0; i < selectResult.size(); i++) {
-				for (int j = 0; j < headingArray.size(); j++) {					
-					if (selectResult.get(i).equals(headingArray.get(j))) {
-						arrayMatch.add(j);
+			System.out.println(headingArray);
+			String condition=conditionResult.toString().replace("[", "").replace("]", "").replace("'", "").replace(",", "");
+			String strArray1[] = condition.split(" ");
+			List<String> conditionList = Arrays.asList(strArray1);
+			ArrayList<String> conditionArray = new ArrayList<String>(conditionList);
+			System.out.println(conditionArray);
+			//comparing elements of heading and elements of condition field from the queue
+				for (int i = 0; i < conditionArray.size(); i++) {
+				for (int j = 0; j < headingArray.size(); j++) {	
+					if ((conditionArray.get(i)).equals(headingArray.get(j))) 
+						conditionHeadingMatch.add(j);	
 					}
 				}
-			}
-			//To retrieve only asked column as per according to entered query
-			for (int k = 0; k < arrayMatch.size(); k++) {
-				while ((line = br.readLine()) != null) {
-					data = line.split(csvSplit);
-					System.out.print(data[arrayMatch.get(k)] + " ");
-				}
-				System.out.println();
-				br = new BufferedReader(new FileReader(csvFile));
-				br.readLine();
-			}
-		} catch (Exception e) {
+					System.out.print(conditionHeadingMatch);
+					
+					for(int y=0;y<conditionHeadingMatch.size();y++) {
+						System.out.println();
+						for (int i = 0; i < conditionArray.size(); i++) {
+						while ((line = br.readLine()) != null) {
+							data = line.split(csvSplit);
+							if(i<(conditionArray.size()-2)) {
+							if((data[conditionHeadingMatch.get(y)]).startsWith(conditionArray.get(i+2))) 
+							{
+								for (int k = 0; k < selectResult.size(); k++) {
+									for (int l = 0; l < headingArray.size(); l++) {		                              
+										if ((selectResult.get(k)).equals(headingArray.get(l)))
+							System.out.print(data[l]+" ");									
+									}
+								}
+							}
+						}
+						}
+						
+						
+						br=new BufferedReader(new FileReader(csvFile)); 
+						br.readLine();
+					}
+					}
+				
+		} catch (FileNotFoundException e) {
 			System.out.println(e);
-		} finally {
+		}catch (NumberFormatException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+		finally {
 			//To close bufferReader after completion of tasks
 			if (br != null) {
 				try {
