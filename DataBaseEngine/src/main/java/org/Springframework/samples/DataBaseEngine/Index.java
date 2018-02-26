@@ -1,4 +1,4 @@
-package org.Springframework.samples.SpringJDBCMaven;
+package org.Springframework.samples.DataBaseEngine;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Index {
